@@ -15,20 +15,34 @@ pipeline {
         stage('Ensure package.json') {
             steps {
                 script {
-                    // Check if package.json exists; if not, create a basic one
                     if (!fileExists('package.json')) {
+
                         writeFile file: 'package.json', text: '''{
-  "name": "woundersbeauty",
+  "name": "wondersbeauty",
   "version": "1.0.0",
   "description": "Auto-generated package.json",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "dependencies": {}
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }'''
-                        // Also create a placeholder index.js
-                        writeFile file: 'index.js', text: '''console.log("Hello World!");'''
+
+                        writeFile file: 'index.js', text: '''
+const express = require('express');
+const app = express();
+const port = 80;
+
+app.get('/', (req, res) => {
+  res.send("Hello from Wonders Beauty Container!");
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+'''
                     }
                 }
             }
@@ -48,7 +62,10 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d --name ${APP_NAME} -p 3000:80 ${APP_NAME}:latest'
+                sh '''
+                docker rm -f ${APP_NAME} || true
+                docker run -d --name ${APP_NAME} -p 3000:80 ${APP_NAME}:latest
+                '''
             }
         }
     }
