@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        APP_NAME = "sevenwonders"
+        APP_NAME = "wondersbeauty"
     }
 
     stages {
@@ -18,7 +18,7 @@ pipeline {
                     // Check if package.json exists; if not, create a basic one
                     if (!fileExists('package.json')) {
                         writeFile file: 'package.json', text: '''{
-  "name": "sevenwonders",
+  "name": "woundersbeauty",
   "version": "1.0.0",
   "description": "Auto-generated package.json",
   "main": "index.js",
