@@ -1,5 +1,5 @@
 writeFile file: 'package.json', text: '''{
-  "name": "sevenwonders",
+  "name": "wondersbeauty",
   "version": "1.0.0",
   "description": "Auto-generated package.json",
   "main": "index.js",
