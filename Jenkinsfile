@@ -48,7 +48,7 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d --name ${APP_NAME} -p 3000:80${APP_NAME}:latest'
+                sh 'docker run -d --name ${APP_NAME} -p 3000:80 ${APP_NAME}:latest'
             }
         }
     }
