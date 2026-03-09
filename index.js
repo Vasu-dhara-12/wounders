@@ -1,4 +1,3 @@
-writeFile file: 'index.js', text: '''
 const express = require("express");
 const os = require("os");
 
