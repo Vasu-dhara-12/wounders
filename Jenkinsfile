@@ -66,9 +66,9 @@ app.listen(port, () => {
         stage('Docker Login') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-credentials',
-                    usernameVariable: 'DOCKER_USERNAME',
-                    passwordVariable: 'DOCKER_PASSWORD'
+                    credentialsId: 'DOCKER_CREDS',
+                    usernameVariable: 'vasudhara12',
+                    passwordVariable: 'vasundhara@324'
                 )]) {
                     sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
                 }
