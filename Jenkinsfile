@@ -3,9 +3,12 @@ pipeline {
 
     environment {
         APP_NAME = "wondersbeauty"
+        DOCKER_USER = "vasudhara"
+        IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -56,7 +59,25 @@ app.listen(port, () => {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ${APP_NAME}:latest .'
+                sh 'docker build -t ${IMAGE_NAME}:latest .'
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                }
+            }
+        }
+
+        stage('Push Image to Docker Hub') {
+            steps {
+                sh 'docker push ${IMAGE_NAME}:latest'
             }
         }
 
@@ -64,7 +85,7 @@ app.listen(port, () => {
             steps {
                 sh '''
                 docker rm -f ${APP_NAME} || true
-                docker run -d --name ${APP_NAME} -p 3000:80 ${APP_NAME}:latest
+                docker run -d --name ${APP_NAME} -p 3000:80 ${IMAGE_NAME}:latest
                 '''
             }
         }
