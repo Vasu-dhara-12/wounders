@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         APP_NAME = "wondersbeauty"
-        DOCKER_USER = "vasudhara"
+        DOCKER_USER = "vasudhara12"
         IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
     }
 
