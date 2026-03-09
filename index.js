@@ -1,6 +1,7 @@
 writeFile file: 'index.js', text: '''
-const express = require('express');
-const os = require('os');
+const express = require("express");
+const os = require("os");
+
 const app = express();
 const port = 80;
 
@@ -8,20 +9,20 @@ const port = 80;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Request Logger Middleware
+// Logger
 app.use((req, res, next) => {
     const time = new Date().toISOString();
     console.log(`[${time}] ${req.method} ${req.url}`);
     next();
 });
 
-// Home Route
-app.get('/', (req, res) => {
+// Home
+app.get("/", (req, res) => {
     res.send("Welcome to Wonders Beauty Node.js Application running inside Docker!");
 });
 
-// Health Check Route
-app.get('/health', (req, res) => {
+// Health
+app.get("/health", (req, res) => {
     res.json({
         status: "UP",
         message: "Application is running successfully",
@@ -29,8 +30,8 @@ app.get('/health', (req, res) => {
     });
 });
 
-// System Information Route
-app.get('/system', (req, res) => {
+// System
+app.get("/system", (req, res) => {
     res.json({
         hostname: os.hostname(),
         platform: os.platform(),
@@ -41,19 +42,16 @@ app.get('/system', (req, res) => {
     });
 });
 
-// Users API (Example)
 let users = [
     { id: 1, name: "Alice", email: "alice@test.com" },
     { id: 2, name: "Bob", email: "bob@test.com" }
 ];
 
-// Get All Users
-app.get('/api/users', (req, res) => {
+app.get("/api/users", (req, res) => {
     res.json(users);
 });
 
-// Get Single User
-app.get('/api/users/:id', (req, res) => {
+app.get("/api/users/:id", (req, res) => {
     const user = users.find(u => u.id == req.params.id);
     if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -61,8 +59,7 @@ app.get('/api/users/:id', (req, res) => {
     res.json(user);
 });
 
-// Add New User
-app.post('/api/users', (req, res) => {
+app.post("/api/users", (req, res) => {
     const newUser = {
         id: users.length + 1,
         name: req.body.name,
@@ -70,14 +67,14 @@ app.post('/api/users', (req, res) => {
     };
 
     users.push(newUser);
+
     res.status(201).json({
         message: "User created successfully",
         user: newUser
     });
 });
 
-// Update User
-app.put('/api/users/:id', (req, res) => {
+app.put("/api/users/:id", (req, res) => {
     const user = users.find(u => u.id == req.params.id);
 
     if (!user) {
@@ -93,8 +90,7 @@ app.put('/api/users/:id', (req, res) => {
     });
 });
 
-// Delete User
-app.delete('/api/users/:id', (req, res) => {
+app.delete("/api/users/:id", (req, res) => {
     users = users.filter(u => u.id != req.params.id);
 
     res.json({
@@ -102,9 +98,8 @@ app.delete('/api/users/:id', (req, res) => {
     });
 });
 
-// Application Info Route
-app.get('/about', (req, res) => {
-    res.send({
+app.get("/about", (req, res) => {
+    res.json({
         application: "Wonders Beauty App",
         version: "1.0.0",
         developer: "DevOps Pipeline",
@@ -112,7 +107,6 @@ app.get('/about', (req, res) => {
     });
 });
 
-// Error Handling Middleware
 app.use((err, req, res, next) => {
     console.error("Error:", err.stack);
     res.status(500).json({
@@ -121,14 +115,12 @@ app.use((err, req, res, next) => {
     });
 });
 
-// 404 Route
 app.use((req, res) => {
     res.status(404).json({
         message: "Route not found"
     });
 });
 
-// Start Server
 app.listen(port, () => {
     console.log("====================================");
     console.log(" Wonders Beauty Application Started ");
